@@ -42,6 +42,12 @@ router.get("/api/goods", async (req, res, next) => {
     data: result,
   });
 });
+router.get("/*", async (req, res, next) => {
+  res.json({
+    code: 400,
+    message: "错误请求，请检查请求地址是否错误",
+  });
+});
 router.use(function (err, req, res, next) {
   res.json({
     code: 400,
