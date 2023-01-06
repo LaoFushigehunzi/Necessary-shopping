@@ -42,6 +42,38 @@ router.get("/api/goods", async (req, res, next) => {
     data: result,
   });
 });
+router.get("/api/cart", async (req, res, next) => {
+  let result = await pool.query("select * from cart");
+  res.json({
+    code: 200,
+    message: "请求成功",
+    data: result,
+  });
+});
+router.get("/api/order", async (req, res, next) => {
+  let result = await pool.query("select * from order");
+  res.json({
+    code: 200,
+    message: "请求成功",
+    data: result,
+  });
+});
+router.get("/api/user", async (req, res, next) => {
+  let result = await pool.query("select * from user");
+  res.json({
+    code: 200,
+    message: "请求成功",
+    data: result,
+  });
+});
+router.get("/api/hot_key_name", async (req, res, next) => {
+  let result = await pool.query("select * from hot_key_name");
+  res.json({
+    code: 200,
+    message: "请求成功",
+    data: result,
+  });
+});
 router.get("/*", async (req, res, next) => {
   res.json({
     code: 400,
