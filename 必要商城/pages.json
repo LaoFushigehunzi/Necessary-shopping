@@ -2,7 +2,7 @@
 	"pages": [{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
+				"navigationBarTitleText": "必要商城",
 				"enablePullDownRefresh": false
 			}
 
@@ -31,7 +31,8 @@
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 
 		}, {
@@ -47,12 +48,7 @@
 			"style": {
 				"navigationBarTitleText": "全部订单",
 				"enablePullDownRefresh": false,
-				"app-plus": {
-					"titleNView": {
-						"homeButton": false,
-						"autoBackButton": false
-					}
-				}
+				"navigationStyle": "custom"
 			}
 
 
@@ -70,7 +66,8 @@
 			"path": "pages/setting/setting",
 			"style": {
 				"navigationBarTitleText": "设置",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 
 		},
@@ -78,7 +75,8 @@
 			"path": "pages/myProfile/myProfile",
 			"style": {
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 
 		}
