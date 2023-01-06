@@ -1,6 +1,6 @@
 <template>
 	<view>
-		搜索
+		全部订单
 	</view>
 </template>
 

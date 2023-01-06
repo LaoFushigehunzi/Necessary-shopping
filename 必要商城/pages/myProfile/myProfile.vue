@@ -1,6 +1,6 @@
 <template>
 	<view>
-		搜索
+		我的个人信息
 	</view>
 </template>
 
