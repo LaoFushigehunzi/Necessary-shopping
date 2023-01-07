@@ -6,7 +6,7 @@ let pool;
   pool = await mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "0000",
+    password: "root",
     database: "我们的小小商",
   });
 })();

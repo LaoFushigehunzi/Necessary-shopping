@@ -1,15 +1,17 @@
 <template>
 	<view>
-		<uni-nav-bar title="一级目录名称" left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
-		分类2
+		<uni-nav-bar  title="男装" left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
+		
+		
 	</view>
 </template>
 
 <script>
+	import {axiosGet} from'@/utils/http.js'
 	export default {
 		data() {
 			return {
-
+				onename:[]
 			}
 		},
 		methods: {
@@ -18,10 +20,18 @@
 					url: '../index/index'
 				})
 			}
+		},
+		async created(){
+			let result=await axiosGet("/api/one");
+			console.log(result)
+			if(+result.code===200){
+				this.onename=result.data;
+			}
 		}
+		 
+		
 	}
 </script>
 
 <style>
-
 </style>

@@ -11,5 +11,5 @@ app.use(function (err, req, res, next) {
   res.status(500).send(err.message);
 });
 app.listen(5050, () => {
-  console.log("8000端口已启用");
+  console.log("5050端口已启用");
 });
