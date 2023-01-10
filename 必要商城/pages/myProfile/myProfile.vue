@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<uni-nav-bar left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
+		<uni-nav-bar left-icon="back" statusBar="true" fixed="true" @clickLeft="comeBack"></uni-nav-bar>
 		我的个人信息
 	</view>
 </template>
@@ -13,7 +13,7 @@
 			}
 		},
 		methods: {
-			comeback() {
+			comeBack() {
 				uni.switchTab({
 					url: '../index/index'
 				})
