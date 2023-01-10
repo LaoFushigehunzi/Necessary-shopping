@@ -1,44 +1,40 @@
 <template>
-	<SearchBtn></SearchBtn>
-	<view style="position: relative;">
-		<view class="headFlex">
-			<view class="tabbar" @mousemove="showScroll">
-				<uni-transition :mode-class="" :show="">
-					<view class="scroll-all" v-if="!showTag">
-						<scroll-view scroll-x="true" scroll-y="false" enable-flex>
-							<view class="scroll-view-item "
-								:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''"
-								@click="chooseThis" id="0">热门
-							</view>
-							<view class="scroll-view-item"
-								:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
-								v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis"
-								:id="item.order">
-								{{item.name}}
-							</view>
-						</scroll-view>
+	<SearchBtn style="position: fixed;z-index: 11;width: 100%;top: 0;"></SearchBtn>
+	<view>
+		<view class="tabbar" @mousemove="showScroll" style="position: fixed;z-index: 11;top: 63.4058rpx;">
+			<view class="scroll-all" v-if="!showTag">
+				<scroll-view scroll-x="true" scroll-y="false" enable-flex>
+					<view class="scroll-view-item "
+						:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''" @click="chooseThis"
+						id="0">热门
 					</view>
-				</uni-transition>
-
-				<view class="title" v-if="showTag">
-					全部频道
+					<view class="scroll-view-item"
+						:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
+						v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis" :id="item.order">
+						{{item.name}}
+					</view>
+				</scroll-view>
+			</view>
+			<view class="title" v-if="showTag">
+				全部频道
+			</view>
+			<view class="iconTo" @click="switchto">
+				<uni-icons :type="showTag?'top':'bottom'" size="16" color="#C6C6C6">
+				</uni-icons>
+			</view>
+			<view class="all_item" v-if='showTag'>
+				<view class="gridItem" :style="current==0?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
+					:id="0">热门
 				</view>
-				<view class="iconTo" @click="switchto">
-					<uni-icons :type="showTag?'top':'bottom'" size="16" color="#C6C6C6">
-					</uni-icons>
-				</view>
-				<view class="all_item" v-if='showTag'>
-					<view class="gridItem" :style="current==0?'color:#7F4395;border-color: #7F4395;':''"
-						@click="chooseThis" :id="0">热门
-					</view>
-					<view class="gridItem" v-for="(item,index) in one_data" :key="index"
-						:style="(index+1)==current?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
-						:id="item.order">{{item.name}}
-					</view>
+				<view class="gridItem" v-for="(item,index) in one_data" :key="index"
+					:style="(index+1)==current?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
+					:id="item.order">{{item.name}}
 				</view>
 			</view>
+			<view class="yinying" v-if="showTag" style="top: 592.3913rpx;z-index: 1;" @click="goBack"></view>
 		</view>
-		<view class="yinying" v-if="showTag" style="top: 592.3913rpx;" @click="goBack"></view>
+	</view>
+	<view style="margin-top: 152.1739rpx;" v-if="current==0">
 		<view class="lunbo">
 			<swiper class="swiper" circular autoplay @change="lunboChange">
 				<swiper-item v-for="(item ,index) in lunboList" :key="index">
@@ -149,6 +145,9 @@
 			goBack() {
 				this.showTag = false;
 				this.titleClassifyStatus = 0;
+			},
+			changeToFixed() {
+				console.log('22222222222222222222222222');
 			}
 		}
 	}
@@ -158,7 +157,7 @@
 	.yinying {
 		position: absolute;
 		width: 100%;
-		height: 100%;
+		height: 49vh;
 		z-index: 100;
 		background-color: rgba(0, 0, 0, .4);
 	}
@@ -235,6 +234,10 @@
 		}
 
 	}
+
+
+
+
 
 
 

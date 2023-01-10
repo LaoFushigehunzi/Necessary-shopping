@@ -144,8 +144,10 @@
 
 	.recommend {
 		position: relative;
+		width: 100%;
 
 		.title {
+			width: 100%;
 			display: flex;
 			background-color: white;
 			height: 100rpx;
@@ -165,8 +167,8 @@
 		}
 
 		.classify_all {
-			position: absolute;
-			z-index: 99;
+			position: relative;
+			z-index: 10;
 			display: flex;
 			flex-wrap: wrap;
 			background-color: white;

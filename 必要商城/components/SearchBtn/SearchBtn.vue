@@ -42,14 +42,14 @@
 	}
 
 	.root {
-
+		height: 63.4058rpx;
 		background-color: #ffffff;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 
 		.content {
-			width: 710.1449rpx;
+			width: 680rpx;
 			height: 63.4058rpx;
 			padding-left: 34rpx;
 			background-color: #F4F4F4;
