@@ -2,5 +2,9 @@
   "dependencies": {
     "axios": "^0.27.2",
     "axios-adapter-uniapp": "^0.1.4"
+  },
+  "devDependencies": {
+    "browserslist": "^4.21.4",
+    "caniuse-lite": "^1.0.30001442"
   }
 }

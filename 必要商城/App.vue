@@ -29,4 +29,12 @@
 		color: #333;
 		padding: 10px;
 	}
+	//隐藏全局滚动条
+	::-webkit-scrollbar {  
+	    display: none;  
+	    width: 0 !important;  
+	    height: 0 !important;  
+	    -webkit-appearance: none;  
+	    background: transparent;  
+	}
 </style>

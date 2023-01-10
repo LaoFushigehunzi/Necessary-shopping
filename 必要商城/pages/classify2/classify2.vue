@@ -1,25 +1,54 @@
 <template>
-	<view>
-		<uni-nav-bar   title="" left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
-			<!-- <view>
-				<scroll-view class="scroll-view_H" v-for="item in three_data" :key="item.three_id" scroll-x="true" @scroll="scroll" scroll-left="20">
-					<view id="demo1" class="scroll-view-item_H uni-bg-red">{{item.name}}</view>
+	<view class="classify2">
+		<uni-nav-bar   title="宠物" left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
+		<view class="content">
+			<view class="index">
+				
+				<scroll-view scroll-x="true" :scroll-into-view="scrollIntoIndex" class="scroll-header" >
+					<view
+					:id="'top'+index"
+						class="header-item"
+						v-for="(item,index) in topBar"
+						:key="index"
+						@tap="changeTab(index)"
+					>
+						<text :class="topBarIndex===index?'f-active-color':'f-color'">{{item.name}}</text>
+					</view>
 				</scroll-view>
-			</view> -->
-			<view>
-				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="120">
-					<view id="demo1" class="scroll-view-item_H uni-bg-red">风扇</view>
-					<view id="demo2" class="scroll-view-item_H uni-bg-green">清洁吸尘</view>
-					<view id="demo3" class="scroll-view-item_H uni-bg-blue">加湿净化</view>
-					<view id="demo5" class="scroll-view-item_H uni-bg-red">风扇</view>
-					<view id="demo6" class="scroll-view-item_H uni-bg-green">清洁吸尘</view>
-					<view id="demo7" class="scroll-view-item_H uni-bg-blue">加湿净化</view>
-					<view id="demo8" class="scroll-view-item_H uni-bg-red">风扇</view>
-					<view id="demo9" class="scroll-view-item_H uni-bg-green">清洁吸尘</view>
-					<view id="demo10" class="scroll-view-item_H uni-bg-blue">加湿净化</view>
-				</scroll-view>
+				
+				<swiper @change="onChangeTab" :current="topBarIndex">
+					<swiper-item
+						v-for="(item,index) in topBar"
+						:key="index"
+					>
+						<view>{{item.name}}</view>
+					</swiper-item>
+				</swiper>
+				
+				
+				
+				<!-- 推荐模板 -->
+				<!-- <IndexSwiper></IndexSwiper>
+				<Recommend></Recommend>
+				<Card cardTitle='猜你喜欢'></Card>
+				<CommodityList></CommodityList> -->
+				
+				<!-- 其他模板: 运动户外 美妆... -->
+				<!-- <Card cardTitle='运动户外'></Card>
+				<Banner></Banner>
+				<Icons></Icons>
+				<Card cardTitle='热销爆品'></Card>
+				<Hot></Hot>
+				<Card cardTitle='店铺推荐'></Card>
+				<Shop></Shop>
+				<Card cardTitle="为您推荐"></Card>
+				<CommodityList></CommodityList>
+				-->
 			</view>
+			
+		</view>
 	</view>
+
 </template>
 
 <script>
@@ -28,107 +57,117 @@
 		//响应性属性
 		data() {
 			return {
-				one_id:334,
-				three_id:561,
-				three:'',
-				twoname:[],
-				threename:[],
-				three_data:[],
-				scrollTop: 0,
-				old: {
-					scrollTop: 0
-				}
-				
+				// 选中的索引
+				topBarIndex:0,
+				// 顶栏跟随的索引id值
+				scrollIntoIndex:'top0',
+				// 顶栏数据
+				topBar:[
+				    {name:'羊绒羊毛衫'},
+				    {name:'针织衫'},
+				    {name:'服饰内衣'},
+				    {name:'衬衫/雪纺'},
+				    {name:'风衣/大衣'},
+				    {name:'外套马甲'},
+				    {name:'皮衣皮草'},
+					{name:"羽绒服/棉衣"},
+					{name:"休闲裤"},
+					{name:"牛仔裤"},
+					{name:"半身裙"},
+					{name:"连衣裙"}
+				],
+				one_id:"685",
+				three_id:"690",
+				two_item:[]
 			}
 		},
 		created(){
-			this.getTwoname(),
-			this.getThreename()
+			this.getThree();
 		},
-		onLoad() {},
 		methods: {
-			comeback() {
-				uni.switchTab({
-					url: '../index/index'
-				})
+			changeTab(index){
+			    if (this.topBarIndex === index) {
+			        return;
+			    }
+			    this.topBarIndex = index
+			    this.scrollIntoIndex = 'top'+index
 			},
-			async getTwoname(){
-				let result=await axiosGet("/api/two");
-				if(+result.code===200){
-					this.twoname=result.data;
-					console.log(this.twoname)
-				}
+			onChangeTab(e){
+			    this.changeTab(e.detail.current)
 			},
-			async getThreename(){
-				let one_id =this.one_id;
-				let two_id=this.two_id;
-				let three_id =this.three_id;
-				let result1=await axiosGet("/api/one");
-				let result3=await axiosGet("/api/three");
-				let one_item=result1.data.find(item=>item.one_id==one_id)
-				let three_item=result3.data.find(item=>item.three_id==three_id)
-				let three_data=result3.data.filter((item)=>{return item.two_id==three_item.two_id})
+			// async getThree(){
+			// 	let three_id=this.three_id;
+			// 	let result3=await axiosGet("/api/three");
 				
-				this.three_data=three_data
-				console.log(three_item)
-				console.log(three_data)
-				// if(+result.code===200){
-				// 	console.log(result)
-				// 	this.threename=result.data;
-				// 	console.log(this.threename)
-				// }
-			},
-			upper: function(e) {
-				console.log(e)
-			},
-			lower: function(e) {
-				console.log(e)
-			},
-			scroll: function(e) {
-				console.log(e)
-				this.old.scrollTop = e.detail.scrollTop
-			},
-			goTop: function(e) {
-				// 解决view层不同步的问题
-				this.scrollTop = this.old.scrollTop
-				this.$nextTick(function() {
-					this.scrollTop = 0
-				});
-				uni.showToast({
-					icon: "none",
-					title: "纵向滚动 scrollTop 值已被修改为 0"
-				})
+			// 	// console.log(one_item.name)
+			// },
+			async getThree(){
+				let three_id=this.three_id;
+				let result1=await axiosGet("/api/one");
+				let result2=await axiosGet("/api/two");
+				let result3=await axiosGet("/api/three")
+				let three_item=result3.data.find(item=>item.three_id==three_id)
+				let two_item=result2.data.find(item=>item.two_id==three_item.two_id)
+				let one_item=result1.data.find(item=>item.one_id==two_item.one_id)
+				console.log(one_item)
+				
+				
 			}
-			
-		},
-		
-		 
+		 }
 		
 	}
 </script>
 
 <style>
-	.scroll-Y {
-		height: 20rpx;
-	}
-	.scroll-view_H {
-		white-space: nowrap;
-		width: 100%;
+	.scroll-header{
+	    height: 80rpx;
+	    white-space: nowrap;
+		background-color: #ffffff;
 		display: flex;
+		justify-content: center;
+		align-items: center;
+		/* border-bottom: 2rpx solid #f7f7f7; */
 	}
-	.scroll-view-item {
-		height: 300rpx;
-		width: 25%;
-		line-height: 300rpx;
-		text-align: center;
-		font-size: 36rpx;
+	.header-item{
+	    display: inline-block;
+	    padding: 0rpx 30rpx;
+	    font-size: 26rpx;
 	}
-	.scroll-view-item_H {
-		display: inline-block;
-		width: 100%;
-		height: 20rpx;
-		line-height: 20rpx;
-		text-align: center;
-		font-size: 14rpx;
+	.f-active-color{
+		line-height: 80rpx;
+		padding: 10rpx 0;
+		color: #cd56fb;
+	    border-bottom: 6rpx solid #cd56fb;
 	}
+	    .index{
+	        width: 100%;
+	    }
+	    .content {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	        justify-content: center;
+	    }
+	 
+	    .logo {
+	        height: 200rpx;
+	        width: 200rpx;
+	        margin-top: 200rpx;
+	        margin-left: auto;
+	        margin-right: auto;
+	        margin-bottom: 50rpx;
+	    }
+	 
+	    .text-area {
+	        display: flex;
+	        justify-content: center;
+	    }
+	 
+	    .title {
+	        font-size: 36rpx;
+	        color: #8f8f94;
+	    }
 </style>
+
+
+

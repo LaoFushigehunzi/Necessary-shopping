@@ -38,8 +38,8 @@
 		}, {
 			"path": "pages/classify2/classify2",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
+				"navigationBarTitleText": "分类2",
+				"enablePullDownRefresh": true,
 				"navigationStyle": "custom"
 			}
 
@@ -47,7 +47,7 @@
 			"path": "pages/order_all/order_all",
 			"style": {
 				"navigationBarTitleText": "全部订单",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh":false,
 				"navigationStyle": "custom"
 			}
 
@@ -74,7 +74,7 @@
 		{
 			"path": "pages/myProfile/myProfile",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "我的必要",
 				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
 			}
@@ -123,7 +123,8 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
-			"background": "#efeff4"
+			"background": "#efeff4",
+			"scrollIndicator":"none"
 		}
 	},
 	"tabBar": {
