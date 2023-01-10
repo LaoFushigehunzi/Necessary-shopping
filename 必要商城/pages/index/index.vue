@@ -1,21 +1,25 @@
 <template>
 	<SearchBtn></SearchBtn>
-	<view>
+	<view style="position: relative;">
 		<view class="headFlex">
 			<view class="tabbar" @mousemove="showScroll">
-				<view class="scroll-all" v-if="!showTag">
-					<scroll-view scroll-x="true" scroll-y="false" enable-flex>
-						<view class="scroll-view-item "
-							:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''"
-							@click="chooseThis" id="0">热门
-						</view>
-						<view class="scroll-view-item"
-							:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
-							v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis" :id="item.order">
-							{{item.name}}
-						</view>
-					</scroll-view>
-				</view>
+				<uni-transition :mode-class="" :show="">
+					<view class="scroll-all" v-if="!showTag">
+						<scroll-view scroll-x="true" scroll-y="false" enable-flex>
+							<view class="scroll-view-item "
+								:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''"
+								@click="chooseThis" id="0">热门
+							</view>
+							<view class="scroll-view-item"
+								:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
+								v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis"
+								:id="item.order">
+								{{item.name}}
+							</view>
+						</scroll-view>
+					</view>
+				</uni-transition>
+
 				<view class="title" v-if="showTag">
 					全部频道
 				</view>
@@ -32,9 +36,9 @@
 						:id="item.order">{{item.name}}
 					</view>
 				</view>
-				<view class="yinying" v-if="showTag" style="top: 48vh;" @click="goBack"></view>
 			</view>
 		</view>
+		<view class="yinying" v-if="showTag" style="top: 592.3913rpx;" @click="goBack"></view>
 		<view class="lunbo">
 			<swiper class="swiper" circular autoplay @change="lunboChange">
 				<swiper-item v-for="(item ,index) in lunboList" :key="index">
@@ -66,56 +70,7 @@
 		<view class="ad">
 			<image src="@/static/index/ad/2.png" mode="widthFix" class="adItem"></image>
 		</view>
-		<view class="recommend">
-			<view class="title">
-				<view class="titleItem" id="0" @click="titleChange" :style="titleCurrent==0?'color:#7F4395':''">
-					热门
-				</view>
-				<view class="titleItem" id="1" @click="titleChange " :style="titleCurrent==1?'color:#7F4395':''">
-					价格
-					<image :src="priceOrderIcon[priceOrderStatus]" mode="widthFix" class="titleImg">
-					</image>
-				</view>
-				<view class="titleItem" id="2" @click="titleChange" :style="titleClassifyStatus==1?'color:#7F4395':''">
-					全部分类
-					<image :src="titleClassifyIcon[titleClassifyStatus]" mode="widthFix" class="titleImg"></image>
-				</view>
-			</view>
-			<view class="classify_all" v-if='titleClassifyStatus==1'>
-				<view class="classifyItem" :style="classifyCurrent==0?'color:#7F4395;border-color: #7F4395;':''"
-					@click="classifyChoose" id="0">
-					全部
-				</view>
-				<view class="classifyItem" v-for="(item,index) in one_data2" :key="index"
-					:style="(index+1)==classifyCurrent?'color:#7F4395;border-color: #7F4395;':''"
-					@click="classifyChoose" :id="item.order2">{{item.name}}
-				</view>
-				<view class="yinying" v-if="titleClassifyStatus==1" @click="goBack" style="top: 396.7391rpx;">
-				</view>
-			</view>
-			<view class="content_item" v-for="(item,index) in goods" :key="index" :index="item.three_id">
-				<view class="coverImg">
-
-				</view>
-				<uni-table>
-					<uni-tr>
-						<uni-td class="goods_text">
-							<view><span style="color:#F7A701;font-size: 13px;">￥{{item.new_price}}</span>
-								<span style="text-decoration: line-through;font-size: 12px;">￥{{item.price}}</span>
-							</view>
-							<view>
-								<text
-									style="background-color:#7F4395;font-size: 10px ;display:inline-block;color: white;">爆品</text>
-							</view>
-							<view style="color: #BF9E6B;font-size: 13px;">{{item.maker}}</view>
-							<view style="font-size: 14px;">{{item.name}}</view>
-							<view style="color:#bbb;font-size: 10px;">{{item.favourableComments}}条好评</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-
-			</view>
-		</view>
+		<Recommend></Recommend>
 	</view>
 </template>
 <script>
@@ -126,20 +81,9 @@
 		data() {
 			return {
 				one_data: [], //one的数据
-				one_data2: [], //one的数据2
-				goods: [], //商品数据
-				goods2: [], //商品数据2
 				current: 0, //选中的下标
 				showTag: false, //商品目录是否显示全部,
 				lunboCurrent: 0, //lunbo当前图片index
-				titleCurrent: 0, //recommend中选中的title下标 0,1,2
-				priceOrderStatus: 0, //价格排序的图标状态 0,1,2
-				priceOrderIcon: ['../../static/image/updown.png', '../../static/image/updown1.png',
-					'../../static/image/updown2.png'
-				], //价格排序的图标
-				titleClassifyStatus: 0, //全部分类状态 0,1
-				classifyCurrent: 0, //全部分类中被选中的下标
-				titleClassifyIcon: ['../../static/image/down2.png', '../../static/image/up.png'], //标题 全部分类 图标
 				lunboList: [{
 					url: '../../static/index/lunbo/1.webp'
 				}, {
@@ -185,18 +129,8 @@
 						this.one_data = result.data.sort(function(a, b) {
 							return a.order - b.order
 						});
-						let data = result.data.filter(item => item.order2 != null)
-						this.one_data2 = data.sort(function(a, b) {
-							return a.order2 - b.order2
-						});
 					} else {
 						this.one_data = ['数据获取失败'];
-					}
-					if (result2.code == 200) {
-						// goods的数据
-						this.goods = result2.data;
-					} else {
-						this.goods = ['数据获取失败'];
 					}
 				} catch (e) {
 					console.log(e.message);
@@ -212,22 +146,6 @@
 			lunboChange(e) {
 				this.lunboCurrent = e.detail.current;
 			},
-			titleChange(e) {
-				let current = this.titleCurrent;
-				this.titleCurrent = e.currentTarget.id;
-				if (this.titleCurrent == 0) {
-					this.priceOrderStatus = 0;
-					this.titleClassifyStatus = 0;
-				}
-				if (this.titleCurrent == 1) {
-					this.titleClassifyStatus = 0;
-					this.priceOrderStatus = this.priceOrderStatus == 1 ? 2 : 1;
-				}
-				if (this.titleCurrent == 2) {
-					this.titleCurrent = current;
-					this.titleClassifyStatus = this.titleClassifyStatus == 0 ? 1 : 0;
-				}
-			},
 			goBack() {
 				this.showTag = false;
 				this.titleClassifyStatus = 0;
@@ -240,9 +158,9 @@
 	.yinying {
 		position: absolute;
 		width: 100%;
-		height: 100vh;
+		height: 100%;
 		z-index: 100;
-		background-color: rgba(0, 0, 0, .3);
+		background-color: rgba(0, 0, 0, .4);
 	}
 
 	.tabbar {
@@ -278,7 +196,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-
+			transition: all 3s linear 0s;
 		}
 
 		.title {
@@ -396,63 +314,6 @@
 				font-size: 12px;
 				color: #666666;
 			}
-		}
-	}
-
-	.recommend {
-		position: relative;
-
-		.title {
-			display: flex;
-			background-color: white;
-			height: 100rpx;
-			justify-content: space-around;
-
-			.titleItem {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 14px;
-
-				.titleImg {
-					margin-left: 10rpx;
-					width: 24rpx;
-				}
-			}
-		}
-
-		.classify_all {
-			position: absolute;
-			z-index: 99;
-			display: flex;
-			flex-wrap: wrap;
-			background-color: white;
-			margin-top: 1.8116rpx;
-			padding-left: 7.2464rpx;
-			padding-top: 30.7971rpx;
-			height: 362.3188rpx;
-
-			.classifyItem {
-				border: #EEEEEE 1px solid;
-				width: 144.9275rpx;
-				height: 54.3478rpx;
-				line-height: 54.3478rpx;
-				text-align: center;
-				margin-left: 28.9855rpx;
-			}
-		}
-
-		.container {
-			.content_item {
-				width: ;
-
-				.coverImg {}
-
-				.goods_text {
-					background-color: white;
-				}
-			}
-
 		}
 	}
 </style>
