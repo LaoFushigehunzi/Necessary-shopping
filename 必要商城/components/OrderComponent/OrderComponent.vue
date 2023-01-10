@@ -1,31 +1,10 @@
 <template>
 	<view class="recommend">
 		<view class="title">
-			<view class="titleItem" id="0" @click="titleChange" :style="titleCurrent==0?'color:#7F4395':''">
-				热门
+			<view class="titleText">
+				为你推荐
 			</view>
-			<view class="titleItem" id="1" @click="titleChange " :style="titleCurrent==1?'color:#7F4395':''">
-				价格
-				<image :src="priceOrderIcon[priceOrderStatus]" mode="widthFix" class="titleImg">
-				</image>
-			</view>
-			<view class="titleItem" id="2" @click="titleChange" :style="titleClassifyStatus==1?'color:#7F4395':''">
-				全部分类
-				<image :src="titleClassifyIcon[titleClassifyStatus]" mode="widthFix" class="titleImg"></image>
-			</view>
-		</view>
-		<view class="classify_all" v-if='titleClassifyStatus==1'>
-			<view class="classifyItem" :style="classifyCurrent==0?'color:#7F4395;border-color: #7F4395;':''"
-				@click="classifyChoose" id="0">
-				全部
-			</view>
-			<view class="classifyItem" v-for="(item,index) in one_data2" :key="index"
-				:style="(index+1)==classifyCurrent?'color:#7F4395;border-color: #7F4395;':''" @click="classifyChoose"
-				:id="item.order2">{{item.name}}
-			</view>
-		</view>
-		<view class="yinying" v-if="titleClassifyStatus==1" @click="goBack"
-			style="top: 489.1304rpx;right: 0;height: 100%;">
+
 		</view>
 		<view class="content">
 			<view class="content_item" v-for="(item,index) in goods" :key="index" :index="item.three_id">
@@ -56,7 +35,7 @@
 		axiosGet
 	} from '@/common/js/http.js'
 	export default {
-		name: "Recommend",
+		name: "OrderComponent",
 		data() {
 			return {
 				one_data2: [], //one的数据2
@@ -136,59 +115,25 @@
 </script>
 
 <style lang="less" scoped>
-	.yinying {
-		position: absolute;
-		z-index: 99;
-		background-color: rgba(0, 0, 0, .4);
-	}
-
 	.recommend {
 		position: relative;
 		width: 100%;
 
 		.title {
+			background-color: white;
+			height: 217.3913rpx;
 			width: 100%;
 			display: flex;
-			background-color: white;
-			height: 100rpx;
-			justify-content: space-around;
+			justify-content: center;
+			align-items: center;
 
-			.titleItem {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 14px;
-
-				.titleImg {
-					margin-left: 10rpx;
-					width: 24rpx;
-				}
+			.titleText {
+				display: inline-block;
+				height: 22px;
+				border-bottom: 1px black solid;
 			}
 		}
 
-		.classify_all {
-			position: relative;
-			z-index: 10;
-			display: flex;
-			flex-wrap: wrap;
-			background-color: white;
-			margin-top: 1.8116rpx;
-			padding-left: 7.2464rpx;
-			padding-top: 30.7971rpx;
-			height: 362.3188rpx;
-			width: 100%;
-
-			.classifyItem {
-				border: #EEEEEE 1px solid;
-				width: 144.9275rpx;
-				height: 54.3478rpx;
-				line-height: 54.3478rpx;
-				text-align: center;
-				margin-left: 28.9855rpx;
-			}
-
-
-		}
 
 		.content {
 			width: 100%;
