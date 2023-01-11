@@ -63,7 +63,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.navRight {
 		background-image: linear-gradient(to bottom right, #F4C77E, #E29A25);
 		height: 39.8551rpx;

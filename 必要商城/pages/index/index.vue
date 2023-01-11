@@ -153,7 +153,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.yinying {
 		position: absolute;
 		width: 100%;

@@ -26,7 +26,7 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	@font-face {
 		font-family: 'iconfont';
 		src: url('@/static/iconfont/iconfont.ttf') format('truetype');

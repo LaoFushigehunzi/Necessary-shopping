@@ -1,20 +1,20 @@
 <template>
 	<view>
-		
+
 	</view>
 </template>
 
 <script>
 	export default {
-		name:"navigation",
+		name: "navigation",
 		data() {
 			return {
-				
+
 			};
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 
 </style>
