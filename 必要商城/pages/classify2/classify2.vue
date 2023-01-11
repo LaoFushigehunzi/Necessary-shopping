@@ -52,7 +52,9 @@
 </template>
 
 <script>
-	import {axiosGet} from'@/utils/http.js'
+	import {
+		axiosGet
+	} from '@/common/js/http.js'
 	export default {
 		//响应性属性
 		data() {
