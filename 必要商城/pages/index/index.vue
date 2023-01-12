@@ -68,6 +68,24 @@
 		</view>
 		<Recommend></Recommend>
 	</view>
+	<scroll-view style="height: 100vh;" :scroll-y="true" @scroll="isFixed">
+		<view v-if="current!=0">
+			<view class="nav">
+				<uni-grid :column="5" :showBorder="false">
+					<uni-grid-item class="nav-item" v-for="(item,index) in three" :key="index">
+						<image :src="item.web_img_url" mode="widthFix"></image>
+						<text>{{item.name}}</text>
+					</uni-grid-item>
+					<uni-grid-item class="nav-item">
+						<image src="/static/index/icon/more.png" mode="widthFix"></image>
+						<text>查看全部</text>
+					</uni-grid-item>
+				</uni-grid>
+				<button @click="show">点击</button>
+			</view>
+			<Recommend2 :tag="isfixed" id="zujian"></Recommend2>
+		</view>
+	</scroll-view>
 </template>
 <script>
 	import {
@@ -76,8 +94,10 @@
 	export default {
 		data() {
 			return {
+				isfixed: false, //Recommend2中title是否固定
 				one_data: [], //one的数据
-				current: 0, //选中的下标
+				three: [], //arr_three数据
+				current: 1, //选中的下标
 				showTag: false, //商品目录是否显示全部,
 				lunboCurrent: 0, //lunbo当前图片index
 				lunboList: [{
@@ -113,25 +133,29 @@
 			}
 		},
 		created() {
-			this.getData()
+			this.getOneData();
+			this.getThreeData();
 		},
 		methods: {
-			async getData() {
-				try {
-					let result = await axiosGet('/api/one');
-					let result2 = await axiosGet('/api/goods');
-					if (result.code == 200) {
-						//按照order属性从小到大排序
-						this.one_data = result.data.sort(function(a, b) {
-							return a.order - b.order
-						});
-					} else {
-						this.one_data = ['数据获取失败'];
-					}
-				} catch (e) {
-					console.log(e.message);
+			async getOneData() {
+				let result = await axiosGet('/api/one');
+				if (result.code == 200) {
+					//按照order属性从小到大排序
+					this.one_data = result.data.sort(function(a, b) {
+						return a.order - b.order
+					});
+				} else {
+					this.one_data = ['数据获取失败'];
 				}
-
+			},
+			async getThreeData() {
+				let result = await axiosGet('/api/three');
+				if (result.code == 200) {
+					//按照order属性从小到大排序
+					this.three = result.data
+				} else {
+					this.three = ['数据获取失败'];
+				}
 			},
 			chooseThis(e) {
 				this.current = e.currentTarget.id;
@@ -146,9 +170,16 @@
 				this.showTag = false;
 				this.titleClassifyStatus = 0;
 			},
-			changeToFixed() {
-				console.log('22222222222222222222222222');
-			}
+			isFixed() {
+				const query = uni.createSelectorQuery().in(this);
+				query.select('#zujian').boundingClientRect(data => {
+					if (data.top < 17) {
+						this.isfixed = true;
+					} else {
+						this.isfixed = false;
+					}
+				}).exec();
+			},
 		}
 	}
 </script>
@@ -235,12 +266,6 @@
 
 	}
 
-
-
-
-
-
-
 	.lunbo {
 		position: relative;
 
@@ -318,5 +343,27 @@
 				color: #666666;
 			}
 		}
+	}
+
+	.nav {
+		margin-top: 152.1739rpx;
+		background-color: white;
+
+		.nav-item {
+			font-size: 12px;
+			display: flex;
+			align-items: center;
+
+			image {
+				width: 100%;
+			}
+
+			text {
+				text-align: center;
+			}
+		}
+
+
+
 	}
 </style>

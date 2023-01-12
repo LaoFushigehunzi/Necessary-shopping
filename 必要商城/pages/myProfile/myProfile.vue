@@ -11,7 +11,9 @@
 				<view>好友 0 <span style="margin: 0 90.5797rpx;">|</span> 关注 0</view>
 			</view>
 			<view class="messageIcon">
-				<uni-icons type="chat" color="white" size="25"></uni-icons>
+				<!-- <uni-icons type="chat" color="white" size="25"></uni-icons> -->
+				<image src="/static/myProfile/6.png" mode="widthFix" style="width: 45.2899rpx;color: white;">
+				</image>
 			</view>
 		</view>
 		<view class="tag">
@@ -27,9 +29,11 @@
 
 		</view>
 		<view class="dynamic">
-			<image src="/static/myProfile/4.png" mode="widthFix" style="" class="dynamicItem" />
-			<view style="text-align: center;" class="dynamicItem">
-				暂无动态
+			<view class="content">
+				<image src="/static/myProfile/5.png" mode="widthFix" class="dynamicItem" />
+				<view style="text-align: center;color: #999999;position: relative;top:36.2319rpx;" class="dynamicItem">
+					暂无动态
+				</view>
 			</view>
 		</view>
 	</view>
@@ -118,9 +122,10 @@
 		align-items: center;
 		flex-direction: column;
 
-		.dynamicItem {
+
+		.content {
 			position: relative;
-			bottom: 199.2754rpx;
+			bottom: 81.5217rpx;
 		}
 	}
 </style>
