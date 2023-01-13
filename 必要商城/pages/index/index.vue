@@ -5,12 +5,13 @@
 			<view class="scroll-all" v-if="!showTag">
 				<scroll-view scroll-x="true" scroll-y="false" enable-flex>
 					<view class="scroll-view-item "
-						:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''" @click="chooseThis"
-						id="0">热门
+						:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''"
+						@click="chooseThis(0)" id="0">热门
 					</view>
 					<view class="scroll-view-item"
 						:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
-						v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis" :id="item.order">
+						v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis((index+1),item.one_id)"
+						:id="item.order">
 						{{item.name}}
 					</view>
 				</scroll-view>
@@ -23,17 +24,17 @@
 				</uni-icons>
 			</view>
 			<view class="all_item" v-if='showTag'>
-				<view class="gridItem" :style="current==0?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
-					:id="0">热门
+				<view class="gridItem" :style="current==0?'color:#7F4395;border-color: #7F4395;':''"
+					@click="chooseThis(0)" :id="0">热门
 				</view>
 				<view class="gridItem" v-for="(item,index) in one_data" :key="index"
-					:style="(index+1)==current?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
-					:id="item.order">{{item.name}}
+					:style="(index+1)==current?'color:#7F4395;border-color: #7F4395;':''"
+					@click="chooseThis((index+1),item.one_id)" :id="item.order">{{item.name}}
 				</view>
 			</view>
-			<view class="yinying" v-if="showTag" style="top: 592.3913rpx;z-index: 1;" @click="goBack"></view>
 		</view>
 	</view>
+	<view class="yinying" v-if="showTag" style="top: 592.3913rpx;z-index: 1;" @click="goBack"></view>
 	<view style="margin-top: 152.1739rpx;" v-if="current==0">
 		<view class="lunbo">
 			<swiper class="swiper" circular autoplay @change="lunboChange">
@@ -72,32 +73,37 @@
 		<view v-if="current!=0">
 			<view class="nav">
 				<uni-grid :column="5" :showBorder="false">
-					<uni-grid-item class="nav-item" v-for="(item,index) in three" :key="index">
+					<uni-grid-item class="nav-item" v-for="(item,index) in three" :key="index" v-if="three.length">
 						<image :src="item.web_img_url" mode="widthFix"></image>
 						<text>{{item.name}}</text>
 					</uni-grid-item>
-					<uni-grid-item class="nav-item">
-						<image src="/static/index/icon/more.png" mode="widthFix"></image>
+					<uni-grid-item class="nav-item" v-if="moreStatus">
+						<image src="/static/index/icon/more.png" mode="widthFix">
+						</image>
 						<text>查看全部</text>
 					</uni-grid-item>
 				</uni-grid>
-				<button @click="show">点击</button>
 			</view>
-			<Recommend2 :tag="isfixed" id="zujian"></Recommend2>
+			<view id="zujian">
+				<Recommend2 :tag="isfixed" :one_id="one_id"></Recommend2>
+			</view>
 		</view>
 	</scroll-view>
 </template>
 <script>
 	import {
-		axiosGet
+		axiosGet,
+		axiosPost
 	} from '@/common/js/http.js'
 	export default {
 		data() {
 			return {
+				moreStatus: false, //更多内容图标是否显示
 				isfixed: false, //Recommend2中title是否固定
 				one_data: [], //one的数据
-				three: [], //arr_three数据
-				current: 1, //选中的下标
+				three: [], //页面的icon宫格
+				current: 9, //选中的下标
+				one_id: '', //选中下标的one_id
 				showTag: false, //商品目录是否显示全部,
 				lunboCurrent: 0, //lunbo当前图片index
 				lunboList: [{
@@ -134,7 +140,6 @@
 		},
 		created() {
 			this.getOneData();
-			this.getThreeData();
 		},
 		methods: {
 			async getOneData() {
@@ -148,17 +153,24 @@
 					this.one_data = ['数据获取失败'];
 				}
 			},
-			async getThreeData() {
-				let result = await axiosGet('/api/three');
-				if (result.code == 200) {
-					//按照order属性从小到大排序
-					this.three = result.data
-				} else {
-					this.three = ['数据获取失败'];
+			async chooseThis(index, id) {
+				this.current = index;
+				if (id) {
+					this.one_id = id;
+					let result = await axiosPost('/api/index/one_id', {
+						id
+					})
+					if (result.data.length > 10) {
+						this.three = result.data.slice(0, 8);
+						this.moreStatus = true;
+					} else if (result.data.length > 5) {
+						this.three = result.data.slice(0, 3);
+						this.moreStatus = true;
+					} else {
+						this.moreStatus = false;
+					}
 				}
-			},
-			chooseThis(e) {
-				this.current = e.currentTarget.id;
+				this.showTag = false;
 			},
 			switchto() {
 				this.showTag = !this.showTag;
@@ -168,7 +180,6 @@
 			},
 			goBack() {
 				this.showTag = false;
-				this.titleClassifyStatus = 0;
 			},
 			isFixed() {
 				const query = uni.createSelectorQuery().in(this);
@@ -188,7 +199,7 @@
 	.yinying {
 		position: absolute;
 		width: 100%;
-		height: 49vh;
+		height: 100%;
 		z-index: 100;
 		background-color: rgba(0, 0, 0, .4);
 	}
@@ -353,9 +364,11 @@
 			font-size: 12px;
 			display: flex;
 			align-items: center;
+			justify-content: center;
 
 			image {
-				width: 100%;
+				align-self: center;
+				width: 60%;
 			}
 
 			text {
