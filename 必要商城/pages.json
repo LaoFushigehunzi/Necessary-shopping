@@ -36,25 +36,25 @@
 		}, {
 			"path": "pages/search/search",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/classify2/classify2",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/order_all/order_all",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 
@@ -62,27 +62,27 @@
 		{
 			"path": "pages/shopping/shopping",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 		},
 		{
 			"path": "pages/setting/setting",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 
 		},
 		{
 			"path": "pages/myProfile/myProfile",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"enablePullDownRefresh": false
 			}
 		}
 	],
