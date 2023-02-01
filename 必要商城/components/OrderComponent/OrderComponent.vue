@@ -4,26 +4,25 @@
 			<view class="titleText">
 				为你推荐
 			</view>
-
 		</view>
 		<view class="content">
 			<view class="content_item" v-for="(item,index) in goods" :key="index" :index="item.three_id">
 				<view class="coverImg">
-					<image :src="item.buy_source" mode="widthFix" class="coverImgStyle"></image>
+					<image :src="item.cart_image" mode="widthFix" class="coverImgStyle"></image>
 				</view>
 				<view class="goods_text">
-					<view><span style="color:#F7A701;font-size: 13px;">￥{{item.new_price}}</span>
-						<span style="text-decoration: line-through;font-size: 12px;">￥{{item.price}}</span>
+					<view><span style="color:#F7A701;font-size: 13px;">￥{{item.cart_new_price}}</span>
+						<span style="text-decoration: line-through;font-size: 12px;">￥{{item.cart_price}}</span>
 					</view>
-					<view>
+					<view v-if="item.cart_labels!=''">
 						<text
-							style="background-color:#7F4395;font-size: 10px ;display:inline-block;color: white;">爆品</text>
+							style="background-color:#AB7FD1;font-size: 10px ;display:inline-block;color: white;">{{item.cart_labels}}</text>
 					</view>
-					<view style="color: #BF9E6B;font-size: 13px;">{{item.maker}}</view>
+					<view style="color: #BF9E6B;font-size: 13px;">{{item.cart_maker}}</view>
 					<view style="font-size: 14px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-						{{item.name}}
+						{{item.cart_title}}
 					</view>
-					<view style="color:#bbb;font-size: 10px;">{{item.favourableComments}}条好评</view>
+					<view style="color:#bbb;font-size: 10px;">{{item.cart_comment_num}}</view>
 				</view>
 			</view>
 		</view>
@@ -77,7 +76,7 @@
 					if (result.code == 200) {
 						// goods的数据
 						this.goods = result.data.sort(function(a, b) {
-							return a.goods_id - b.goods_id
+							return a.cart_weizhi - b.cart_weizhi
 						});
 					} else {
 						this.goods = ['数据获取失败'];
@@ -142,7 +141,8 @@
 
 			.content_item {
 				width: 49%;
-				border: 1px white solid;
+				border: 1px #F4F4F4 solid;
+				background-color: white;
 
 				.coverImg {
 					.coverImgStyle {
@@ -151,7 +151,7 @@
 				}
 
 				.goods_text {
-					background-color: white;
+					margin-top: -7.2464rpx;
 				}
 			}
 
