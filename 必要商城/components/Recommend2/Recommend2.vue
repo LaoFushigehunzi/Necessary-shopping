@@ -1,11 +1,14 @@
 <template>
 	<view class="recommend">
+<<<<<<< HEAD
 		<view class="title">
 			<view class="titleItem" id="0" @click="titleChange" :style="titleCurrent==0?'color:#7F4395':''">
 				热门
 			</view>
 			<view class="titleItem" id="1" @click="titleChange" :style="titleCurrent==1?'color:#7F4395':''"><template>
 	<view class="recommend">
+=======
+>>>>>>> master
 		<view class="title" :style="tag?'position:fixed;z-index:11;top:152.1739rpx;':''">
 			<view class="titleItem" @click="titleChange(0)" :style="titleCurrent==0?'color:#7F4395':''">
 				热门
@@ -371,6 +374,7 @@
 		}
 	}
 </style>
+<<<<<<< HEAD
 
 				价格
 				<image :src="priceOrderIcon[priceOrderStatus]" mode="widthFix" class="titleImg">
@@ -618,3 +622,5 @@
 		}
 	}
 </style>
+=======
+>>>>>>> master

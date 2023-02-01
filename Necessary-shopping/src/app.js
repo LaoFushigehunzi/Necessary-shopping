@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 app.use(router);
 app.use(function (err, req, res, next) {
-  res.status(500).send(err.message);
+  res.status(500).send("服务器出现错误：", err.message);
 });
 app.listen(5050, () => {
   console.log("5050端口已启用");

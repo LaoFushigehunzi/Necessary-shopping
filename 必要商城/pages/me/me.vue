@@ -1,5 +1,6 @@
 <template>
 	<view>
+<<<<<<< HEAD
 		<view class="head">
 			<view class="left">
 				<img class="image" src="../../static/me/head/biyao.png" alt="" mode="widthFix" >
@@ -36,22 +37,44 @@
 		<view class="cj">
 			
 		</view>
+=======
+		我的
+		<button @click="toMyProfile">去myProfile</button>
+		<button @click="toSetting">去设置</button>
+>>>>>>> master
 	</view>
 </template>
 
 <script>
 	export default {
 		data() {
+<<<<<<< HEAD
 			return {
 
 			};
 		},
 		methods: {
 			
+=======
+			return {};
+		},
+		methods: {
+			toMyProfile() {
+				uni.navigateTo({
+					url: '../myProfile/myProfile'
+				})
+			},
+			toSetting() {
+				uni.navigateTo({
+					url: '../setting/setting'
+				})
+			}
+>>>>>>> master
 		}
 	}
 </script>
 
+<<<<<<< HEAD
 <style lang="less">
 	
 .head{
@@ -95,4 +118,7 @@
 	}
 }
 
+=======
+<style lang="less" scoped>
+>>>>>>> master
 </style>
