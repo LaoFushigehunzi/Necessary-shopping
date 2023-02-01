@@ -1,175 +1,322 @@
 <template>
-	<view class="classify2">
-		<uni-nav-bar   title="宠物" left-icon="back" statusBar="true" fixed="true" @clickLeft="comeback"></uni-nav-bar>
-		<view class="content">
-			<view class="index">
-				
-				<scroll-view scroll-x="true" :scroll-into-view="scrollIntoIndex" class="scroll-header" >
-					<view
-					:id="'top'+index"
-						class="header-item"
-						v-for="(item,index) in topBar"
-						:key="index"
-						@tap="changeTab(index)"
-					>
-						<text :class="topBarIndex===index?'f-active-color':'f-color'">{{item.name}}</text>
+	<SearchBtn style="position: fixed;z-index: 11;width: 100%;top: 0;"></SearchBtn>
+	<view>
+		<view class="tabbar" @mousemove="showScroll" style="position: fixed;z-index: 11;top: 63.4058rpx;">
+			<view class="scroll-all" v-if="!showTag">
+				<scroll-view scroll-x="true" scroll-y="false" enable-flex>
+					<view class="scroll-view-item "
+						:style="current==0?'color:#7F4395 ; border-bottom: #7F4395 1px solid;':''" @click="chooseThis"
+						id="0">热门
+					</view>
+					<view class="scroll-view-item"
+						:style="(index+1)==current?'color:#7F4395;border-bottom: #7F4395 1px solid;':''"
+						v-for="(item,index) in one_data" :key="item.one_id" @click="chooseThis" :id="item.order">
+						{{item.name}}
 					</view>
 				</scroll-view>
-				
-				<swiper @change="onChangeTab" :current="topBarIndex">
-					<swiper-item
-						v-for="(item,index) in topBar"
-						:key="index"
-					>
-						<view>{{item.name}}</view>
-					</swiper-item>
-				</swiper>
-				
-				
-				
-				<!-- 推荐模板 -->
-				<!-- <IndexSwiper></IndexSwiper>
-				<Recommend></Recommend>
-				<Card cardTitle='猜你喜欢'></Card>
-				<CommodityList></CommodityList> -->
-				
-				<!-- 其他模板: 运动户外 美妆... -->
-				<!-- <Card cardTitle='运动户外'></Card>
-				<Banner></Banner>
-				<Icons></Icons>
-				<Card cardTitle='热销爆品'></Card>
-				<Hot></Hot>
-				<Card cardTitle='店铺推荐'></Card>
-				<Shop></Shop>
-				<Card cardTitle="为您推荐"></Card>
-				<CommodityList></CommodityList>
-				-->
 			</view>
-			
+			<view class="title" v-if="showTag">
+				全部频道
+			</view>
+			<view class="iconTo" @click="switchto">
+				<uni-icons :type="showTag?'top':'bottom'" size="16" color="#C6C6C6">
+				</uni-icons>
+			</view>
+			<view class="all_item" v-if='showTag'>
+				<view class="gridItem" :style="current==0?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
+					:id="0">热门
+				</view>
+				<view class="gridItem" v-for="(item,index) in one_data" :key="index"
+					:style="(index+1)==current?'color:#7F4395;border-color: #7F4395;':''" @click="chooseThis"
+					:id="item.order">{{item.name}}
+				</view>
+			</view>
+			<view class="yinying" v-if="showTag" style="top: 592.3913rpx;z-index: 1;" @click="goBack"></view>
 		</view>
 	</view>
-
+	<view style="margin-top: 152.1739rpx;" v-if="current==0">
+		<view class="lunbo">
+			<swiper class="swiper" circular autoplay @change="lunboChange">
+				<swiper-item v-for="(item ,index) in lunboList" :key="index">
+					<image :src="item.url" mode="widthFix" class="swiperItem"></image>
+				</swiper-item>
+			</swiper>
+			<view class="dots">
+				<view class="dotsItem" v-for="(item,index) in lunboList" :key="index"
+					:style="index==lunboCurrent?'background-color:#F7B200;border-color: #F7B200':''"></view>
+			</view>
+		</view>
+		<view class="tag">
+			<view class="tagItem" v-for="(item,index) in tag" :key="index">
+				{{item}}
+				<image src="@/static/index/icon/tag.png" mode="widthFix" class="itemImg" v-if="index!=3"></image>
+			</view>
+		</view>
+		<view class="ad">
+			<image src="@/static/index/ad/1.jpeg" mode="widthFix" class="adItem"></image>
+		</view>
+		<view class="tabIcon">
+			<view class="tabItem" v-for="(item,index) in tabIcon" :key="index">
+				<image :src="item.url" mode="widthFix" class="iconImg"></image>
+				<view class="iconName">
+					{{item.name}}
+				</view>
+			</view>
+		</view>
+		<view class="ad">
+			<image src="@/static/index/ad/2.png" mode="widthFix" class="adItem"></image>
+		</view>
+		<Recommend></Recommend>
+	</view>
 </template>
-
 <script>
 	import {
 		axiosGet
 	} from '@/common/js/http.js'
 	export default {
-		//响应性属性
 		data() {
 			return {
-				// 选中的索引
-				topBarIndex:0,
-				// 顶栏跟随的索引id值
-				scrollIntoIndex:'top0',
-				// 顶栏数据
-				topBar:[
-				    {name:'羊绒羊毛衫'},
-				    {name:'针织衫'},
-				    {name:'服饰内衣'},
-				    {name:'衬衫/雪纺'},
-				    {name:'风衣/大衣'},
-				    {name:'外套马甲'},
-				    {name:'皮衣皮草'},
-					{name:"羽绒服/棉衣"},
-					{name:"休闲裤"},
-					{name:"牛仔裤"},
-					{name:"半身裙"},
-					{name:"连衣裙"}
-				],
-				one_id:"685",
-				three_id:"690",
-				two_item:[]
+				one_data: [], //one的数据
+				current: 0, //选中的下标
+				showTag: false, //商品目录是否显示全部,
+				lunboCurrent: 0, //lunbo当前图片index
+				lunboList: [{
+					url: '../../static/index/lunbo/1.webp'
+				}, {
+					url: '../../static/index/lunbo/2.webp'
+				}, {
+					url: '../../static/index/lunbo/3.webp'
+				}, {
+					url: '../../static/index/lunbo/4.webp'
+				}, {
+					url: '../../static/index/lunbo/5.webp'
+				}, {
+					url: '../../static/index/lunbo/6.webp'
+				}], //轮播图列表
+				tag: ['大牌品质', '工厂价格', '顺丰包邮', '无忧退款'], //tag标签
+				tabIcon: [{
+					name: '品质男装',
+					url: '../../static/index/icon/1.webp'
+				}, {
+					name: '食品饮料',
+					url: '../../static/index/icon/2.webp'
+				}, {
+					name: '每日签到',
+					url: '../../static/index/icon/3.webp'
+				}, {
+					name: '每日上新',
+					url: '../../static/index/icon/4.webp'
+				}, {
+					name: '美妆护肤',
+					url: '../../static/index/icon/5.webp'
+				}], //ad下面的点击图标
 			}
 		},
-		created(){
-			this.getThree();
+		created() {
+			this.getData()
 		},
 		methods: {
-			changeTab(index){
-			    if (this.topBarIndex === index) {
-			        return;
-			    }
-			    this.topBarIndex = index
-			    this.scrollIntoIndex = 'top'+index
+			async getData() {
+				try {
+					let result = await axiosGet('/api/one');
+					let result2 = await axiosGet('/api/goods');
+					if (result.code == 200) {
+						//按照order属性从小到大排序
+						this.one_data = result.data.sort(function(a, b) {
+							return a.order - b.order
+						});
+					} else {
+						this.one_data = ['数据获取失败'];
+					}
+				} catch (e) {
+					console.log(e.message);
+				}
+
 			},
-			onChangeTab(e){
-			    this.changeTab(e.detail.current)
+			chooseThis(e) {
+				this.current = e.currentTarget.id;
 			},
-			// async getThree(){
-			// 	let three_id=this.three_id;
-			// 	let result3=await axiosGet("/api/three");
-				
-			// 	// console.log(one_item.name)
-			// },
-			async getThree(){
-				let three_id=this.three_id;
-				let result1=await axiosGet("/api/one");
-				let result2=await axiosGet("/api/two");
-				let result3=await axiosGet("/api/three")
-				let three_item=result3.data.find(item=>item.three_id==three_id)
-				let two_item=result2.data.find(item=>item.two_id==three_item.two_id)
-				let one_item=result1.data.find(item=>item.one_id==two_item.one_id)
-				console.log(one_item)
-				
-				
+			switchto() {
+				this.showTag = !this.showTag;
+			},
+			lunboChange(e) {
+				this.lunboCurrent = e.detail.current;
+			},
+			goBack() {
+				this.showTag = false;
+				this.titleClassifyStatus = 0;
+			},
+			changeToFixed() {
+				console.log('22222222222222222222222222');
 			}
-		 }
-		
+		}
 	}
 </script>
 
-<style>
-	.scroll-header{
-	    height: 80rpx;
-	    white-space: nowrap;
-		background-color: #ffffff;
+<style lang="less">
+	.yinying {
+		position: absolute;
+		width: 100%;
+		height: 49vh;
+		z-index: 100;
+		background-color: rgba(0, 0, 0, .4);
+	}
+
+	.tabbar {
+		width: 100%;
+		display: flex;
+		background-color: white;
+		height: 90rpx;
+		line-height: 80rpx;
+		position: relative;
+
+		.scroll-all {
+			font-size: 15px;
+			white-space: nowrap;
+			display: flex;
+			align-content: center;
+			width: 90%;
+
+			.scroll-view-item {
+				display: inline-block;
+				text-align: center;
+				margin-right: 30rpx;
+				padding: 0 10rpx;
+
+				&:first-child {
+					margin-left: 56rpx;
+				}
+			}
+		}
+
+		.iconTo {
+			width: 10%;
+			color: #C6C6C6;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: all 3s linear 0s;
+		}
+
+		.title {
+			width: 90%;
+			color: #808080;
+			margin-left: 20rpx;
+			font-size: 14px;
+			text-align: left;
+
+		}
+
+		.all_item {
+			position: absolute;
+			width: 100%;
+			height: 40vh;
+			background-color: white;
+			top: 90rpx;
+			border-top: #F0F0F0 1px solid;
+			display: flex;
+			flex-wrap: wrap;
+			padding-top: 10rpx;
+			z-index: 100;
+
+			.gridItem {
+				white-space: nowrap;
+				height: 40rpx;
+				width: 145rpx;
+				text-align: center;
+				line-height: 40rpx;
+				border-radius: 23rpx;
+				border: #808080 1px solid;
+				color: #808080;
+				font-size: 12px;
+				margin-left: 30rpx;
+			}
+		}
+
+	}
+
+
+
+
+
+
+
+	.lunbo {
+		position: relative;
+
+		.swiper {
+			width: 100%;
+			height: 260rpx;
+
+			.swiperItem {
+				width: 100%;
+			}
+		}
+
+		.dots {
+			display: flex;
+			position: absolute;
+			bottom: 30rpx;
+			right: 20rpx;
+
+			.dotsItem {
+				margin-left: 20rpx;
+				width: 10rpx;
+				height: 10rpx;
+				border-radius: 50%;
+				background-color: rgba(0, 0, 0, 0);
+				border: #7F4395 1px solid;
+			}
+		}
+	}
+
+	.tag {
+		height: 70rpx;
+		line-height: 70rpx;
+		background-color: white;
 		display: flex;
 		justify-content: center;
+
+		.tagItem {
+			display: inline-block;
+			color: #9687A4;
+			font-size: 14px;
+
+			.itemImg {
+				margin: 0 20rpx;
+				width: 20rpx;
+				height: 24rpx;
+				position: relative;
+				top: 4rpx;
+			}
+		}
+	}
+
+	.ad {
+		.adItem {
+			width: 100%;
+		}
+	}
+
+	.tabIcon {
+		display: flex;
+		background-color: white;
+		height: 150rpx;
+		justify-content: space-around;
 		align-items: center;
-		/* border-bottom: 2rpx solid #f7f7f7; */
+
+		.tabItem {
+			text-align: center;
+
+			.iconImg {
+				width: 50rpx;
+				height: 50rpx;
+			}
+
+			.iconName {
+				font-size: 12px;
+				color: #666666;
+			}
+		}
 	}
-	.header-item{
-	    display: inline-block;
-	    padding: 0rpx 30rpx;
-	    font-size: 26rpx;
-	}
-	.f-active-color{
-		line-height: 80rpx;
-		padding: 10rpx 0;
-		color: #cd56fb;
-	    border-bottom: 6rpx solid #cd56fb;
-	}
-	    .index{
-	        width: 100%;
-	    }
-	    .content {
-	        display: flex;
-	        flex-direction: column;
-	        align-items: center;
-	        justify-content: center;
-	    }
-	 
-	    .logo {
-	        height: 200rpx;
-	        width: 200rpx;
-	        margin-top: 200rpx;
-	        margin-left: auto;
-	        margin-right: auto;
-	        margin-bottom: 50rpx;
-	    }
-	 
-	    .text-area {
-	        display: flex;
-	        justify-content: center;
-	    }
-	 
-	    .title {
-	        font-size: 36rpx;
-	        color: #8f8f94;
-	    }
 </style>
-
-
-
